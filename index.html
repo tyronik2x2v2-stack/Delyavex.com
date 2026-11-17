@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Delyvex — маркетплейс игровых ценностей</title>
+<style>
+:root{--bg:#F4F3FF;--card:#fff;--ink:#17123A;--mut:#6B6890;--line:#E2DFF7;--acc:#5B3DF5;--on:#fff;--hot:#FF6B4A;--ok:#12A37A;--bad:#D6335B;--soft:#ECE8FF;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#110E26;--card:#1B1740;--ink:#F1EFFF;--mut:#A29FCB;--line:#2D2864;--acc:#8B74FF;--on:#110E26;--hot:#FF8466;--ok:#3DD9A6;--bad:#FF6B8E;--soft:#262058;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#110E26;--card:#1B1740;--ink:#F1EFFF;--mut:#A29FCB;--line:#2D2864;--acc:#8B74FF;--on:#110E26;--hot:#FF8466;--ok:#3DD9A6;--bad:#FF6B8E;--soft:#262058;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(70px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+h1,h2,h3{font-family:"Arial Black",Impact,system-ui,sans-serif;letter-spacing:-.02em;line-height:1.15}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:10px;height:60px}
+.logo{font-family:"Arial Black",system-ui,sans-serif;font-size:20px;display:flex;align-items:center;gap:8px;cursor:pointer;background:0;border:0}
+.logo i{width:26px;height:26px;border-radius:8px;background:var(--acc);display:grid;place-items:center;color:var(--on);font-style:normal;font-size:15px}
+.nav nav{display:flex;gap:2px;margin-left:8px}
+.nav nav button{padding:8px 12px;border-radius:8px;color:var(--mut);font-weight:600;background:0;border:0;cursor:pointer}
+.nav nav button:hover{background:var(--soft);color:var(--ink)}
+.sp{flex:1}
+.btn{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--soft);color:var(--ink)}
+.btn.p{background:var(--acc);color:var(--on)}.btn.d{background:var(--bad);color:#fff}.btn.s{padding:6px 10px;font-size:13px}
+.btn:hover{filter:brightness(1.08)}
+.bal{background:var(--soft);border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
+.me{display:flex;align-items:center;gap:8px;background:0;border:0;cursor:pointer;font-weight:700}
+.av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex:none;display:block}.av svg{width:100%;height:100%;display:block}
+.av.l{width:96px;height:96px}.av.m{width:28px;height:28px}
+#ann{background:var(--hot);color:#fff;text-align:center;padding:8px 14px;font-weight:600;font-size:14px}
+.hero{padding:40px 0 20px}
+.hero h1{font-size:clamp(26px,5vw,48px);max-width:15em}
+.hero p{margin:14px 0 22px;color:var(--mut);max-width:34em;font-size:18px}
+.field,.search{display:flex;gap:8px;background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:6px;max-width:640px}
+.search input,.field input{flex:1;min-width:0;border:0;background:transparent;padding:10px 12px;outline:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;cursor:pointer;font-weight:600;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+section{padding:26px 0}
+h2{font-size:clamp(19px,3vw,26px);margin-bottom:14px}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}.top h2{margin:0}
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:8px}
+.game{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px}
+.game:hover,.game.on{border-color:var(--acc)}.game.on{background:var(--soft)}
+.game .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:900;color:#fff;flex:none}
+.game b{font-size:14px;line-height:1.2}.game small{display:block;color:var(--mut);font-size:12px;font-weight:400}
+.list,.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.panel{padding:18px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:14px 16px;border-top:1px solid var(--line);align-items:center}
+.row:first-child{border-top:0}
+.row h3{font-family:inherit;font-size:16px;font-weight:700;letter-spacing:0}
+.meta{font-size:13px;color:var(--mut);display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;align-items:center}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:6px;background:var(--soft);color:var(--acc);font-weight:700;margin-right:6px}
+.buy{display:flex;align-items:center;gap:10px}
+.price{font-family:"Arial Black",system-ui,sans-serif;font-size:16px;white-space:nowrap}
+.empty{padding:24px;text-align:center;color:var(--mut)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;counter-increment:s}
+.step::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--hot);color:#fff;font-weight:800;margin-bottom:10px}
+.step h3{font-size:16px;margin-bottom:6px;font-family:inherit;letter-spacing:0}.step p{color:var(--mut);font-size:15px}
+.prof{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.big{font-family:"Arial Black",system-ui,sans-serif;font-size:28px}
+form.f{display:grid;gap:10px}
+.f label{font-size:13px;color:var(--mut);font-weight:600;display:grid;gap:4px}
+.f input,.f select{border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;width:100%}
+.f input:focus,.f select:focus{border-color:var(--acc);outline:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.err{color:var(--bad);font-size:14px;font-weight:600;min-height:20px}
+.avs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.avs button{border:3px solid transparent;border-radius:50%;padding:0;background:0;cursor:pointer;aspect-ratio:1}
+.avs button.on{border-color:var(--acc)}.avs .av{width:100%;height:auto;aspect-ratio:1}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+dialog{border:0;border-radius:18px;padding:22px;width:min(440px,92vw);background:var(--card);color:var(--ink);max-height:90vh;overflow:auto}
+dialog::backdrop{background:rgba(10,6,30,.6)}
+dialog h2{margin-bottom:12px}
+.x{float:right;background:0;border:0;font-size:22px;cursor:pointer;color:var(--mut)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;z-index:99}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+footer{padding:26px 0 40px;color:var(--mut);font-size:14px;border-top:1px solid var(--line);margin-top:26px}
+.hide{display:none!important}
+@media (max-width:720px){.nav nav{display:none}.row{grid-template-columns:1fr}.buy{justify-content:space-between}.nm{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="ann" class="hide"></div>
+<header><div class="wrap nav">
+<button class="logo" onclick="go('home')"><i>D</i>Delyvex</button>
+<nav><button onclick="go('home','catalog')">Каталог</button><button onclick="go('home','offers')">Предложения</button><button onclick="go('home','safe')">Гарантия</button></nav>
+<span class="sp"></span><div id="hr" class="nav" style="gap:8px"></div>
+</div></header>
+
+<main class="wrap">
+<div id="v-home">
+<div class="hero"><h1>Покупайте и продавайте игровые ценности без риска</h1>
+<p>Аккаунты, валюта, предметы и подписки от проверенных продавцов. Деньги у продавца только после вашего подтверждения.</p>
+<div class="search"><input id="q" type="search" placeholder="Поиск: игра или товар" aria-label="Поиск"><button class="btn p" onclick="go('home','offers')">Найти</button></div></div>
+<section id="catalog"><div class="top"><h2>Все игры</h2><input id="gq" class="field" style="padding:10px 14px;max-width:240px" type="search" placeholder="Найти игру" aria-label="Найти игру"></div><div class="games" id="games"></div></section>
+<section id="offers"><div class="top"><h2>Предложения</h2><button class="btn p" onclick="sellForm()">Создать лот</button></div>
+<div class="chips" id="chips" style="margin:0 0 12px"></div><div class="list" id="list" aria-live="polite"></div></section>
+<section id="safe"><h2>Как защищена сделка</h2><div class="steps">
+<div class="step"><h3>Вы оплачиваете заказ</h3><p>Сумма списывается с баланса Delyvex.</p></div>
+<div class="step"><h3>Продавец выдаёт товар</h3><p>Вы получаете данные и проверяете их.</p></div>
+<div class="step"><h3>Вы подтверждаете</h3><p>Если что-то не так, пишете в поддержку.</p></div></div></section>
+</div>
+<div id="v-profile" class="hide"></div>
+<div id="v-admin" class="hide"></div>
+</main>
+<footer><div class="wrap"><b>Delyvex</b> — демо-макет маркетплейса. Данные хранятся только в вашем браузере (localStorage), это не настоящая платёжная система.</div></footer>
+<dialog id="m"></dialog><div id="toast" role="status"></div>
+
+<script>
+var K="dx1",db,pick=0,st={q:"",t:"Все",g:"",gq:""};
+var TY=["Валюта","Аккаунты","Ключи","Подписки","Предметы","Услуги"];
+var GM="Roblox,Genshin Impact,Steam,Brawl Stars,CS2,Fortnite,Telegram,Discord,Minecraft,Dota 2,Valorant,League of Legends,Apex Legends,PUBG,PUBG Mobile,Call of Duty,Warzone,GTA V,GTA Online,Rust,Standoff 2,Clash of Clans,Clash Royale,Honkai: Star Rail,Zenless Zone Zero,Wuthering Waves,World of Warcraft,Path of Exile,Diablo IV,Escape from Tarkov,Rainbow Six Siege,Overwatch 2,Mobile Legends,Free Fire,Blox Fruits,Among Us,Fall Guys,Rocket League,EA FC 25,Hearthstone,Lost Ark,Black Desert,Albion Online,Warframe,Destiny 2,Dead by Daylight,Raid: Shadow Legends,Tanks Blitz,World of Tanks,War Thunder,Epic Games,Battle.net,Xbox,PlayStation,Nintendo,Spotify,Netflix,ChatGPT,Telegram Stars".split(",");
+var AV=[["#7C6CF0","#1F2A6B","#29D3E8","#fff",0],["#2ED8B6","#FF5C9A","#B14BE8","#FFD84D",1],["#1E1B3A","#E8ECF7","#FF3B5C","#14122B",2],["#FFB347","#E8590C","#3DDC84","#2B2D42",3],["#FF7A8A","#2B1B17","#F5B301","#fff",0],["#4FC3F7","#7A4CE0","#FF6BA8","#1F2A6B",1],["#3DDC84","#2E3A59","#5B8CFF","#FFD84D",2],["#B388FF","#F5E27A","#2EC4B6","#2B2D42",3]];
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function rub(n){return Number(n).toLocaleString("ru-RU")+" ₽"}
+function h(s){var x=5381,t="dx"+s,i;for(i=0;i<t.length;i++)x=((x<<5)+x+t.charCodeAt(i))|0;return(x>>>0).toString(36)}
+function toast(m){var e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){e.classList.remove("on")},2600)}
+function save(){try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}}
+function load(){
+ try{db=JSON.parse(localStorage.getItem(K))}catch(e){}
+ if(db&&db.users)return;
+ db={users:{},lots:[],promos:{},orders:[],s:"",ann:"",id:100};
+ db.users.qweeky={n:"Qweeky",p:"l0q02a",av:2,bal:100000,role:"admin",banned:0};
+ db.promos.DELYVEX={amt:100,max:50,used:[]};
+ [["Roblox","Валюта","Robux 1000 на аккаунт, без пароля",890,"RobuxShop"],["Genshin Impact","Валюта","Благословение полой луны, по UID",429,"HoyoPay"],["Steam","Ключи","Подарочная карта Steam, регион СНГ",1050,"KeyMaster"],["Brawl Stars","Аккаунты","Аккаунт 40 000 кубков, смена почты",1990,"BrawlKing"],["CS2","Предметы","Набор наклеек, передача по трейду",320,"SkinHub"],["Fortnite","Валюта","1000 В-баксов через подарок",760,"EpicDeals"],["Telegram","Подписки","Premium на 3 месяца по юзернейму",1190,"TgMarket"],["Discord","Подписки","Nitro Basic на 1 месяц",299,"NitroPlus"],["Minecraft","Аккаунты","Лицензия Java + Bedrock",1290,"CubeStore"],["Valorant","Валюта","1000 VP, регион EU",790,"RiotGo"]].forEach(function(l,i){db.lots.push({id:i+1,game:l[0],type:l[1],title:l[2],price:l[3],seller:l[4],rt:(4.5+((i*7)%5)/10).toFixed(1),sl:90+i*217})});
+ save();
+}
+function me(){var u=db.users[db.s];if(u&&u.banned){db.s="";save();toast("Аккаунт заблокирован администратором");return null}return u||null}
+function av(i,c){var a=AV[i%AV.length],bg=a[0],hr=a[1],ey=a[2],cl=a[3],s=a[4],b="",f="";
+ if(s==0){b='<ellipse cy="-5" rx="41" ry="44" fill="'+hr+'"/>';f='<path d="M-38-2L-42-34-27-29-21-54-7-35 3-60 13-36 27-54 31-30 44-35 38-2Q32-20 0-19-30-20-38-2Z" fill="'+hr+'"/>'}
+ if(s==1){b='<ellipse cx="-50" cy="28" rx="15" ry="34" fill="'+hr+'"/><ellipse cx="50" cy="28" rx="15" ry="34" fill="'+hr+'"/><ellipse cy="-5" rx="42" ry="44" fill="'+hr+'"/>';f='<path d="M-38 0Q-42-44 0-45 42-44 38 0 30-22 12-19 4-8-3-19-28-22-38 0Z" fill="'+hr+'"/>'}
+ if(s==2){b='<path d="M-44 70L-46-5Q-48-46 0-48 48-46 46-5L44 70Z" fill="'+hr+'"/>';f='<path d="M-38 2Q-44-46 0-47 44-46 38 2L34-4 24-22 14-10 2-26-8-10-20-24-28-8Z" fill="'+hr+'"/>'}
+ if(s==3){b='<path d="M-40-22L-44-64-12-40ZM40-22L44-64 12-40Z" fill="'+hr+'"/><ellipse cy="8" rx="44" ry="48" fill="'+hr+'"/>';f='<path d="M-38 0Q-42-44 0-45 42-44 38 0 32-18 20-16 14-6 8-17 0-4-8-17-14-6-20-16-32-18-38 0Z" fill="'+hr+'"/>'}
+ var e='<ellipse cx="-15" cy="7" rx="9" ry="11" fill="#fff"/><ellipse cx="15" cy="7" rx="9" ry="11" fill="#fff"/><ellipse cx="-15" cy="8" rx="7" ry="9.5" fill="'+ey+'"/><ellipse cx="15" cy="8" rx="7" ry="9.5" fill="'+ey+'"/><ellipse cx="-15" cy="9" rx="3.5" ry="5.5" fill="#10153A"/><ellipse cx="15" cy="9" rx="3.5" ry="5.5" fill="#10153A"/><circle cx="-18" cy="3" r="3" fill="#fff"/><circle cx="12" cy="3" r="3" fill="#fff"/><path d="M-24-4Q-15-9-6-4M6-4Q15-9 24-4" stroke="#10153A" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="-22" cy="22" rx="6" ry="3.5" fill="#FF8FA8" opacity=".7"/><ellipse cx="22" cy="22" rx="6" ry="3.5" fill="#FF8FA8" opacity=".7"/><path d="M-6 26Q0 31 6 26" stroke="#B5543F" stroke-width="2.5" fill="none" stroke-linecap="round"/>';
+ return '<span class="av '+(c||"")+'"><svg viewBox="-75 -75 150 150"><clipPath id="k"><circle r="75"/></clipPath><g clip-path="url(#k)"><circle r="75" fill="'+bg+'"/>'+b+'<rect x="-9" y="34" width="18" height="24" fill="#F2C4A8"/><path d="M-75 80Q-65 48-22 44L22 44Q65 48 75 80Z" fill="'+cl+'"/><ellipse cy="4" rx="34" ry="38" fill="#FFE0CC"/>'+f+e+'</g></svg></span>'}
+function gcol(n){var x=0,i;for(i=0;i<n.length;i++)x=(x*31+n.charCodeAt(i))%360;return"hsl("+x+",60%,42%)"}
+function avPicker(){return '<div class="avs" id="avs">'+AV.map(function(a,i){return '<button type="button" data-a="av" data-k="'+i+'" class="'+(i==pick?"on":"")+'" aria-label="Аватар '+(i+1)+'">'+av(i)+'</button>'}).join("")+'</div>'}
+function modal(t,body){$("m").innerHTML='<button class="x" onclick="$(\'m\').close()" aria-label="Закрыть">×</button><h2>'+t+'</h2>'+body;if(!$("m").open)$("m").showModal()}
+function head(){var u=me(),s="";
+ if(!u)s='<button class="btn" onclick="authForm(0)">Войти</button><button class="btn p" onclick="authForm(1)">Регистрация</button>';
+ else s=(u.role=="admin"?'<button class="btn s" onclick="go(\'admin\')">Админка</button>':"")+'<button class="bal" onclick="topup()" title="Пополнить">'+rub(u.bal)+' +</button><button class="me" onclick="go(\'profile\')">'+av(u.av)+'<span class="nm">'+esc(u.n)+'</span></button>';
+ $("hr").innerHTML=s;
+ $("ann").classList.toggle("hide",!db.ann);$("ann").textContent=db.ann||""}
+function go(v,id){var u=me();
+ if(v=="admin"&&(!u||u.role!="admin"))v="home";
+ if(v=="profile"&&!u){authForm(0);v="home"}
+ ["home","profile","admin"].forEach(function(x){$("v-"+x).classList.toggle("hide",x!=v)});
+ head();if(v=="home")draw();if(v=="profile")prof();if(v=="admin")admin();
+ setTimeout(function(){id?$(id).scrollIntoView():window.scrollTo(0,0)},0)}
+function authForm(reg){pick=reg?pick:0;
+ modal(reg?"Регистрация":"Вход",'<div class="tabs"><button class="chip" aria-pressed="'+!reg+'" onclick="authForm(0)">Вход</button><button class="chip" aria-pressed="'+!!reg+'" onclick="authForm(1)">Регистрация</button></div><form class="f" onsubmit="auth(event,'+reg+')"><label>Ник<input id="an" maxlength="16" autocomplete="username" required></label><label>Пароль<input id="ap" type="password" minlength="'+(reg?6:1)+'" autocomplete="'+(reg?"new-password":"current-password")+'" required></label>'+(reg?'<label>Выберите аватар</label>'+avPicker():"")+'<div class="err" id="ae"></div><button class="btn p">'+(reg?"Создать аккаунт":"Войти")+'</button></form>')}
+function auth(e,reg){e.preventDefault();var n=$("an").value.trim(),p=$("ap").value,k=n.toLowerCase(),er=$("ae"),u=db.users[k];
+ if(reg){if(!/^[A-Za-z0-9_А-Яа-яЁё]{3,16}$/.test(n))return er.textContent="Ник: 3–16 символов, буквы, цифры или _";
+  if(u)return er.textContent="Этот ник уже занят";
+  db.users[k]={n:n,p:h(p),av:pick,bal:0,role:"user",banned:0}}
+ else{if(!u||u.p!=h(p))return er.textContent="Неверный ник или пароль";
+  if(u.banned)return er.textContent="Аккаунт заблокирован администратором"}
+ db.s=k;save();$("m").close();toast(reg?"Добро пожаловать, "+n+"!":"С возвращением, "+db.users[k].n+"!");go("home")}
+function topup(){if(!me())return authForm(0);
+ modal("Пополнить баланс",'<p style="color:var(--mut);margin-bottom:12px">Введите промокод, и сумма сразу зачислится на баланс.</p><form class="f" onsubmit="redeem(event)"><label>Промокод<input id="pc" autocomplete="off" required></label><div class="err" id="pe"></div><button class="btn p">Активировать</button></form>')}
+function redeem(e){e.preventDefault();var u=me(),c=$("pc").value.trim().toUpperCase(),p=db.promos[c];
+ if(!p)return $("pe").textContent="Такого промокода нет";
+ if(p.used.indexOf(db.s)>-1)return $("pe").textContent="Вы уже активировали этот промокод";
+ if(p.used.length>=p.max)return $("pe").textContent="Лимит активаций исчерпан";
+ p.used.push(db.s);u.bal+=p.amt;save();$("m").close();head();toast("Зачислено "+rub(p.amt));if(!$("v-profile").classList.contains("hide"))prof()}
+function sellForm(){if(!me())return authForm(0);
+ modal("Новый лот",'<form class="f" onsubmit="addLot(event)"><label>Игра<select id="sg">'+GM.map(function(g){return"<option>"+esc(g)+"</option>"}).join("")+'</select></label><label>Тип<select id="st">'+TY.map(function(t){return"<option>"+t+"</option>"}).join("")+'</select></label><label>Название<input id="sn" maxlength="80" required></label><label>Цена, ₽<input id="sp" type="number" min="1" max="1000000" required></label><button class="btn p">Опубликовать</button></form>')}
+function addLot(e){e.preventDefault();var u=me();db.lots.unshift({id:db.id++,game:$("sg").value,type:$("st").value,title:$("sn").value.trim(),price:Math.round(+$("sp").value),seller:u.n,sk:db.s,rt:"5.0",sl:0});save();$("m").close();toast("Лот опубликован");draw();if(!$("v-profile").classList.contains("hide"))prof()}
+function draw(){var u=me(),l=db.lots.filter(function(o){var s=(o.game+" "+o.title).toLowerCase();return(!st.q||s.indexOf(st.q)>-1)&&(st.t=="Все"||o.type==st.t)&&(!st.g||o.game==st.g)});
+ $("list").innerHTML=l.length?l.map(function(o){var adm=u&&u.role=="admin";
+  return '<div class="row"><div><h3><span class="tag">'+esc(o.game)+'</span>'+esc(o.title)+'</h3><div class="meta"><span class="ok">★ '+o.rt+'</span><span>'+o.sl+' продаж</span><span>'+esc(o.type)+'</span><span>Продавец: '+esc(o.seller)+'</span></div></div><div class="buy"><span class="price">'+rub(o.price)+'</span><button class="btn p" data-a="buy" data-k="'+o.id+'">Купить</button>'+(adm?'<button class="btn d s" data-a="dellot" data-k="'+o.id+'" aria-label="Удалить лот">✕</button>':"")+'</div></div>'}).join(""):'<div class="empty">Ничего не найдено. Измените запрос или фильтры.</div>';
+ $("games").innerHTML=GM.filter(function(g){return g.toLowerCase().indexOf(st.gq)>-1}).map(function(g){var n=db.lots.filter(function(o){return o.game==g}).length;return'<button class="game'+(st.g==g?" on":"")+'" data-a="game" data-k="'+esc(g)+'"><span class="ic" style="background:'+gcol(g)+'">'+esc(g[0])+'</span><b>'+esc(g)+'<small>'+n+' лотов</small></b></button>'}).join("")||'<div class="empty">Игра не найдена</div>'}
+function prof(){var u=me();if(!u)return;
+ var o=db.orders.filter(function(x){return x.u==db.s}),my=db.lots.filter(function(x){return x.sk==db.s});
+ $("v-profile").innerHTML='<section><div class="panel prof">'+av(u.av,"l")+'<div><h2 style="margin:0">'+esc(u.n)+(u.role=="admin"?' <span class="tag">админ</span>':"")+'</h2><div class="big">'+rub(u.bal)+'</div></div><div class="sp"></div><button class="btn p" onclick="topup()">Пополнить</button><button class="btn" onclick="avForm()">Сменить аватар</button><button class="btn" data-a="out">Выйти</button></div>'+
+ '<h2>Мои покупки</h2><div class="list">'+(o.length?o.map(function(x){return'<div class="row"><div><h3>'+esc(x.t)+'</h3><div class="meta">'+esc(x.s)+' · '+new Date(x.ts).toLocaleString("ru-RU")+'</div></div><span class="price">'+rub(x.p)+'</span></div>'}).join(""):'<div class="empty">Покупок пока нет</div>')+'</div>'+
+ '<h2 style="margin-top:20px">Мои лоты</h2><div class="list">'+(my.length?my.map(function(x){return'<div class="row"><div><h3><span class="tag">'+esc(x.game)+'</span>'+esc(x.title)+'</h3></div><div class="buy"><span class="price">'+rub(x.price)+'</span><button class="btn d s" data-a="dellot" data-k="'+x.id+'">Удалить</button></div></div>'}).join(""):'<div class="empty">Вы ещё ничего не продаёте</div>')+'</div></section>'}
+function avForm(){pick=me().av;modal("Выберите аватар",avPicker()+'<button class="btn p" style="width:100%;margin-top:14px" data-a="avsave">Сохранить</button>')}
+function admin(){var u=me();if(!u||u.role!="admin")return go("home");
+ var us=Object.keys(db.users),pr=Object.keys(db.promos),sum=0;us.forEach(function(k){sum+=db.users[k].bal});
+ $("v-admin").innerHTML='<section><h2>Панель администратора</h2><div class="panel"><b>Пользователей:</b> '+us.length+' · <b>Лотов:</b> '+db.lots.length+' · <b>Покупок:</b> '+db.orders.length+' · <b>Сумма балансов:</b> '+rub(sum)+'</div>'+
+ '<div class="panel"><h3 style="margin-bottom:12px;font-size:17px">Промокоды</h3><form class="f" onsubmit="mkPromo(event)"><div class="grid2"><label>Код (пусто = случайный)<input id="pk" maxlength="20"></label><label>Сумма, ₽<input id="pa" type="number" min="1" required></label></div><label>Лимит активаций<input id="pm" type="number" min="1" value="1" required></label><button class="btn p">Создать промокод</button></form><div style="margin-top:12px">'+(pr.length?pr.map(function(c){var p=db.promos[c];return'<div class="row"><div><h3>'+esc(c)+'</h3><div class="meta">'+rub(p.amt)+' · активаций '+p.used.length+'/'+p.max+'</div></div><button class="btn d s" data-a="delpromo" data-k="'+esc(c)+'">Удалить</button></div>'}).join(""):'<div class="empty">Промокодов нет</div>')+'</div></div>'+
+ '<div class="panel"><h3 style="margin-bottom:12px;font-size:17px">Пользователи</h3>'+us.map(function(k){var x=db.users[k];return'<div class="row"><div style="display:flex;gap:10px;align-items:center">'+av(x.av,"m")+'<div><h3>'+esc(x.n)+(x.role=="admin"?' <span class="tag">админ</span>':"")+(x.banned?' <span class="bad">забанен</span>':"")+'</h3><div class="meta">'+rub(x.bal)+'</div></div></div><div class="buy" style="flex-wrap:wrap"><button class="btn s" data-a="bal" data-k="'+esc(k)+'">Баланс</button>'+(k!=db.s?'<button class="btn s" data-a="role" data-k="'+esc(k)+'">'+(x.role=="admin"?"Снять админа":"Сделать админом")+'</button><button class="btn '+(x.banned?"":"d ")+'s" data-a="ban" data-k="'+esc(k)+'">'+(x.banned?"Разбанить":"Забанить")+'</button>':"")+'</div></div>'}).join("")+'</div>'+
+ '<div class="panel"><h3 style="margin-bottom:12px;font-size:17px">Объявление на сайте</h3><form class="f" onsubmit="mkAnn(event)"><label>Текст (пусто = убрать)<input id="an2" maxlength="120" value="'+esc(db.ann)+'"></label><button class="btn p">Сохранить</button></form><p style="color:var(--mut);font-size:14px;margin-top:10px">Лоты удаляются кнопкой ✕ в списке предложений.</p></div></section>'}
+function isAdm(){var u=me();return u&&u.role=="admin"}
+function mkPromo(e){e.preventDefault();if(!isAdm())return;var c=$("pk").value.trim().toUpperCase()||("DX"+Math.random().toString(36).slice(2,8).toUpperCase());
+ if(db.promos[c])return toast("Такой промокод уже есть");
+ db.promos[c]={amt:Math.round(+$("pa").value),max:Math.round(+$("pm").value),used:[]};save();admin();toast("Создан промокод "+c)}
+function mkAnn(e){e.preventDefault();if(!isAdm())return;db.ann=$("an2").value.trim();save();head();toast("Объявление обновлено")}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a,k=b.dataset.k,u=me(),x;
+ if(a=="av"){pick=+k;document.querySelectorAll("#avs button").forEach(function(c){c.classList.toggle("on",c===b)})}
+ if(a=="avsave"&&u){u.av=pick;save();$("m").close();head();prof()}
+ if(a=="out"){db.s="";save();go("home");toast("Вы вышли")}
+ if(a=="game"){st.g=st.g==k?"":k;draw();$("offers").scrollIntoView()}
+ if(a=="buy"){if(!u)return authForm(0);x=db.lots.filter(function(o){return o.id==k})[0];if(!x)return;
+  if(x.sk==db.s)return toast("Нельзя купить свой лот");
+  if(u.bal<x.price){toast("Недостаточно средств. Пополните баланс по промокоду");return topup()}
+  u.bal-=x.price;x.sl++;if(x.sk&&db.users[x.sk])db.users[x.sk].bal+=x.price;
+  db.orders.push({u:db.s,t:x.game+": "+x.title,s:x.seller,p:x.price,ts:Date.now()});save();head();draw();toast("Покупка оформлена: "+rub(x.price))}
+ if(a=="dellot"){x=db.lots.filter(function(o){return o.id==k})[0];if(!x||!(isAdm()||x.sk==db.s))return;db.lots=db.lots.filter(function(o){return o.id!=k});save();draw();if(!$("v-profile").classList.contains("hide"))prof();toast("Лот удалён")}
+ if(!isAdm())return;
+ if(a=="delpromo"){delete db.promos[k];save();admin()}
+ if(a=="ban"&&k!=db.s){db.users[k].banned=db.users[k].banned?0:1;save();admin();toast(db.users[k].banned?"Пользователь забанен":"Пользователь разбанен")}
+ if(a=="role"&&k!=db.s){db.users[k].role=db.users[k].role=="admin"?"user":"admin";save();admin()}
+ if(a=="bal"){var v=prompt("Изменить баланс "+db.users[k].n+" на сумму (можно отрицательную):","100");if(v===null)return;v=Math.round(+v);if(!isFinite(v))return toast("Введите число");db.users[k].bal=Math.max(0,db.users[k].bal+v);save();admin();head()}
+});
+$("q").oninput=function(){st.q=this.value.trim().toLowerCase();draw()};
+$("gq").oninput=function(){st.gq=this.value.trim().toLowerCase();draw()};
+$("chips").innerHTML=["Все"].concat(TY).map(function(t){return'<button class="chip" aria-pressed="'+(t=="Все")+'">'+t+'</button>'}).join("");
+$("chips").onclick=function(e){var b=e.target.closest(".chip");if(!b)return;st.t=b.textContent;this.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed",c===b)});draw()};
+load();go("home");
+</script>
+</body>
+</html>
